@@ -12,17 +12,6 @@ export class FundsService implements IFundsService {
     private fundsRepository: Repository<Funds>,
   ) {}
 
-  /*  async addFunds(id: number, charityName: string, totalIncome: number,
-                   email: string, website: string, telNumber: number): Promise<Funds> {
-        let funds = this.fundsRepository.create();
-        funds.id = id;
-        funds.charityName = charityName;
-        funds.totalIncome = totalIncome;
-        funds.email = email;
-        funds.website = website;
-
-    }*/
-
   async getTotalFunds(): Promise<Funds[]> {
     const funds = await this.fundsRepository.find();
     const fundModels: FundModels[] = JSON.parse(JSON.stringify(funds));
@@ -36,8 +25,10 @@ export class FundsService implements IFundsService {
     id: number,
     donationAmount: number,
   ): Promise<Funds> {
-    const updateDonation = { totalIncome: donationAmount };
-    await this.fundsRepository.update(id, updateDonation);
+    console.log('in service:' + id + 'amount ' + donationAmount);
+    const update = { totalIncome: donationAmount };
+    const updatedFund = await this.fundsRepository.update(id, update);
+    console.log('updated', updatedFund);
     return undefined;
   }
 }

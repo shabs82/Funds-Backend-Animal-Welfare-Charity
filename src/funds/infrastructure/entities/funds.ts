@@ -6,7 +6,7 @@ export class Funds {
   public id: number;
   @Column({ unique: true })
   public charityName: string;
-  @Column({ unique: true })
+  @Column()
   public totalIncome: number;
   @Column({ unique: true })
   public description: string;

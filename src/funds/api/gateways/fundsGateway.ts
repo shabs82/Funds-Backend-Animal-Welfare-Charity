@@ -39,13 +39,13 @@ export class FundsGateway {
     );
     client.emit('charityName', charityName);
   }
+
   @SubscribeMessage('donationAmount')
   async handleDonationAmountEvent(
     @MessageBody() dto: UpdateMoneyDto,
     @ConnectedSocket() client: Socket,
   ): Promise<void> {
-    console.log(dto.donationAmount);
-    console.log('dskjfhfa');
+    console.log(dto.donationAmount + ' +++ ' + dto.id);
     await this.fundsService.updateDonationAmount(dto.id, dto.donationAmount);
     const funds = await this.fundsService.getTotalFunds();
     client.emit('allFunds', funds);
