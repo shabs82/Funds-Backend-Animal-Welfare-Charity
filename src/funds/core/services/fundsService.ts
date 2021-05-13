@@ -1,18 +1,16 @@
-import {IFundsService} from "../primary-ports/funds.service.interface";
-import {Injectable} from "@nestjs/common";
+import { IFundsService } from '../primary-ports/funds.service.interface';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Funds} from '../../infrastructure/entities/funds';
-import {FundModels} from "../models/models";
-
+import { Funds } from '../../infrastructure/entities/funds';
+import { FundModels } from '../models/models';
 
 @Injectable()
 export class FundsService implements IFundsService {
-    constructor(
-        @InjectRepository(Funds)
-        private fundsRepository: Repository<Funds>,
-    ) {
-    }
+  constructor(
+    @InjectRepository(Funds)
+    private fundsRepository: Repository<Funds>,
+  ) {}
 
   /*  async addFunds(id: number, charityName: string, totalIncome: number,
                    email: string, website: string, telNumber: number): Promise<Funds> {
@@ -25,10 +23,21 @@ export class FundsService implements IFundsService {
 
     }*/
 
-    async getTotalFunds(): Promise<Funds[]> {
-        const funds = await this.fundsRepository.find();
-        const fundModels: FundModels[] = JSON.parse(JSON.stringify(funds));
-        return funds;
-    }
-}
+  async getTotalFunds(): Promise<Funds[]> {
+    const funds = await this.fundsRepository.find();
+    const fundModels: FundModels[] = JSON.parse(JSON.stringify(funds));
+    return funds;
+  }
+  async getFundsByCharityName(charityName: string): Promise<void> {
+    await this.fundsRepository.findOne({ charityName: charityName });
+  }
 
+  async updateDonationAmount(
+    id: number,
+    donationAmount: number,
+  ): Promise<Funds> {
+    const updateDonation = { totalIncome: donationAmount };
+    await this.fundsRepository.update(id, updateDonation);
+    return undefined;
+  }
+}
