@@ -4,6 +4,8 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import {
   IFundsService,
@@ -48,6 +50,14 @@ export class FundsGateway {
     console.log(dto.donationAmount + ' +++ ' + dto.id);
     await this.fundsService.updateDonationAmount(dto.id, dto.donationAmount);
     const funds = await this.fundsService.getTotalFunds();
-    client.emit('allFunds', funds);
+    this.server.emit('allFunds', funds);
+  }
+
+  async handleConnection(client: Socket, ...args: any[]): Promise<any> {
+    console.log('Client Connect', client.id);
+  }
+
+  async handleDisconnect(client: Socket, ...args: any): Promise<any> {
+    console.log('Client Disconnect', client.id);
   }
 }
