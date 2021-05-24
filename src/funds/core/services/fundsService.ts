@@ -25,10 +25,8 @@ export class FundsService implements IFundsService {
     id: number,
     donationAmount: number,
   ): Promise<Funds> {
-    console.log('in service:' + id + 'amount ' + donationAmount);
     const update = { totalIncome: donationAmount };
     const updatedFund = await this.fundsRepository.update(id, update);
-    console.log('updated', updatedFund);
     return undefined;
   }
 }
